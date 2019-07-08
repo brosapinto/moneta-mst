@@ -7,11 +7,11 @@ import EditorModel from "./stores/editor";
 import Cell from "./Cell";
 
 function App({ editor }) {
-  const { visibleCells, history } = editor;
+  const { isLoading, visibleCells, history } = editor;
   const undo = () => history.canUndo && history.undo();
   const redo = () => history.canRedo && history.redo();
 
-  if (!visibleCells.length) {
+  if (isLoading) {
     return <p>Loading...</p>;
   }
 

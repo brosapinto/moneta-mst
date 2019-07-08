@@ -11,12 +11,16 @@ const Editor = types
   .actions(self => {
     return {
       load: flow(function*() {
+        self.isLoading = true;
+
         try {
           const view = yield loadView();
 
           applySnapshot(self, { view });
         } catch (err) {
           console.error(err);
+        } finally {
+          self.isLoading = false;
         }
       }),
       afterCreate() {
@@ -28,6 +32,9 @@ const Editor = types
     get visibleCells() {
       return (self.view && [...self.view.cells.values()]) || [];
     }
+  }))
+  .volatile(self => ({
+    isLoading: false
   }));
 
 export default Editor;
