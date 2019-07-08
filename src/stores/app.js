@@ -8,3 +8,5 @@ const App = types
     hierarchy: types.array(View)
   })
   .actions(self => ({}));
+
+export default App;

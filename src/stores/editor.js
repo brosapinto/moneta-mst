@@ -1,10 +1,12 @@
 import { types, flow, applySnapshot } from "mobx-state-tree";
+import { UndoManager } from "mst-middlewares";
 import View from "./view";
 import { loadView } from "../services";
 
 const Editor = types
   .model({
-    view: types.maybe(View)
+    view: types.maybe(View),
+    history: types.optional(UndoManager, {})
   })
   .actions(self => {
     return {
