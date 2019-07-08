@@ -9,12 +9,8 @@ const View = types
     columns: types.integer,
     rows: types.integer
   })
-  .actions(self => ({
-    removeCell(cell) {
-      destroy(cell);
-    },
-    afterCreate() {},
-    beforeDestroy() {}
-  }));
+  .actions(self => {
+    return { removeCell: destroy };
+  });
 
 export default View;

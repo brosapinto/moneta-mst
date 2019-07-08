@@ -1,15 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { observer } from "mobx-react";
+import { onSnapshot, onPatch, addMiddleware } from "mobx-state-tree";
 
 import "./styles.css";
-import Editor from "./stores/editor";
-import { onSnapshot, onPatch, addMiddleware } from "mobx-state-tree";
+import EditorModel from "./stores/editor";
+import Cell from "./Cell";
 
 function App({ editor }) {
   const { visibleCells } = editor;
-
-  console.log(visibleCells);
 
   if (!visibleCells.length) {
     return <p>Loading...</p>;
@@ -19,30 +18,17 @@ function App({ editor }) {
     <ul>
       {visibleCells.map(cell => (
         <li key={cell.id}>
-          <input
-            value={cell.value}
-            onChange={evt => cell.changeValue(evt.target.value)}
-          />
+          <Cell cell={cell} />
         </li>
       ))}
     </ul>
   );
 }
 
-const editor = Editor.create();
-
-console.log("visible", editor.visibleCells);
-
+const editor = EditorModel.create();
 //onSnapshot(editor, json => console.log(json));
 //onPatch(editor, patch => console.log("patch", patch));
 
-addMiddleware(editor, (call, next, abort) => {
-  console.log(call);
-  return next(call, i => i);
-});
-
 const rootElement = document.getElementById("root");
-
-const AppObserved = observer(App);
-
-ReactDOM.render(<AppObserved editor={editor} />, rootElement);
+const AppContainer = observer(App);
+ReactDOM.render(<AppContainer editor={editor} />, rootElement);

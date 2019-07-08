@@ -1,4 +1,4 @@
-import { types } from "mobx-state-tree";
+import { types, getParent } from "mobx-state-tree";
 
 const Position = types.model({
   column: types.number,
@@ -14,6 +14,12 @@ const Cell = types
   .actions(self => ({
     changeValue(value) {
       self.value = value;
+    },
+    remove() {
+      getParent(self, 2).removeCell(self);
+    },
+    beforeDestroy() {
+      console.info(`cell ${self.id} was destroyed`);
     }
   }));
 
